@@ -1,0 +1,52 @@
+{
+    "compilerOptions": {
+      /* Visit https://aka.ms/tsconfig to read more about this file */
+  
+      /* Language and Environment */
+      "target": "ES2020", // Define a versão do ECMAScript para a qual o código será transpilado
+      "lib": ["ES2020", "DOM"], // Bibliotecas padrão disponíveis (DOM pode ser útil mesmo em backend para tipos globais)
+  
+      /* Modules */
+      "module": "CommonJS", // Sistema de módulos a ser usado (CommonJS é padrão para Node.js tradicional)
+      "rootDir": "./src", // Especifica o diretório raiz dos arquivos fonte TypeScript
+      "moduleResolution": "node", // Como o TypeScript resolve os módulos (Node.js style)
+      // "baseUrl": "./src", // Opcional: Permite importações relativas à pasta 'src' (ex: 'modules/myModule' em vez de '../modules/myModule')
+      // "paths": {}, // Opcional: Mapeamentos de caminho (aliases) se baseUrl estiver definido
+  
+      /* JavaScript Support */
+      // "allowJs": true, // Permite que arquivos JavaScript sejam compilados
+      // "checkJs": true, // Reporta erros em arquivos .js
+  
+      /* Emit */
+      "outDir": "./dist", // Diretório de saída para os arquivos JavaScript compilados
+      "sourceMap": true, // Gera arquivos .map para debugging
+      // "removeComments": true, // Remove comentários do output JavaScript
+      "declaration": true, // Gera arquivos de declaração .d.ts correspondentes
+      "declarationMap": true, // Gera source maps para os arquivos de declaração
+      // "emitDeclarationOnly": true, // Apenas emite arquivos de declaração, não .js
+  
+      /* Interop Constraints */
+      "esModuleInterop": true, // Permite interoperabilidade com módulos CommonJS (import default from 'module')
+      "forceConsistentCasingInFileNames": true, // Garante que o casing dos nomes de arquivos seja consistente
+  
+      /* Type Checking */
+      "strict": true, // Habilita todas as opções de checagem de tipo estritas (recomendado)
+      // "noImplicitAny": true, // Reporta erro em expressões e declarações com tipo 'any' implícito
+      // "strictNullChecks": true, // Checagem estrita de nulos
+      // "strictFunctionTypes": true, // Checagem estrita de tipos de função
+      // "strictPropertyInitialization": true, // Garante que propriedades de classes sejam inicializadas no construtor
+      // "noImplicitThis": true, // Reporta erro em 'this' com tipo 'any' implícito
+      // "alwaysStrict": true, // Analisa em modo estrito e emite "use strict" para cada arquivo fonte
+  
+      /* Completeness */
+      "skipLibCheck": true // Pula a checagem de tipos de todos os arquivos de declaração (.d.ts) (acelera compilação)
+    },
+    "include": [
+      "src/**/*" // Especifica quais arquivos TypeScript devem ser incluídos na compilação
+    ],
+    "exclude": [
+      "node_modules", // Exclui a pasta node_modules
+      "**/*.spec.ts", // Exclui arquivos de teste (se você os tiver)
+      "**/*.test.ts" // Exclui arquivos de teste (se você os tiver)
+    ]
+  }

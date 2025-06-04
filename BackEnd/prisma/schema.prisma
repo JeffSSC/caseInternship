@@ -1,0 +1,25 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // Mude para "mysql", "sqlite", etc., se necessário
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Cliente {
+  id              Int      @id @default(autoincrement())
+  nome_completo   String
+  cpf_cnpj        String   @unique // CPF ou CNPJ, assumindo que deve ser único
+  telefone        String
+  data_nascimento DateTime // Prisma mapeia para o tipo Date do JavaScript/TypeScript
+  email           String   @unique
+
+  // Opcional: timestamps de criação e atualização
+  // createdAt       DateTime @default(now())
+  // updatedAt       DateTime @updatedAt
+
+  @@map("clientes") // Mapeia o nome do modelo para a tabela "clientes" no banco
+}
