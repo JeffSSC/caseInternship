@@ -1,25 +1,53 @@
 // prisma/schema.prisma
+
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  // Mude para "mysql", "sqlite", etc., se necessário
-  provider = "postgresql"
+  provider = "postgresql" // Ou mysql, etc., conforme sua configuração
   url      = env("DATABASE_URL")
 }
 
 model Cliente {
   id              Int      @id @default(autoincrement())
   nome_completo   String
-  cpf_cnpj        String   @unique // CPF ou CNPJ, assumindo que deve ser único
+  cpf_cnpj        String   @unique
   telefone        String
-  data_nascimento DateTime // Prisma mapeia para o tipo Date do JavaScript/TypeScript
+  data_nascimento DateTime @db.Date // Mapeia para o tipo DATE do SQL
   email           String   @unique
 
-  // Opcional: timestamps de criação e atualização
-  // createdAt       DateTime @default(now())
-  // updatedAt       DateTime @updatedAt
+  // Relacionamento: Um cliente pode ter várias alocações
+  alocacoes AlocacaoCliente[]
 
-  @@map("clientes") // Mapeia o nome do modelo para a tabela "clientes" no banco
+  @@map("clientes")
+}
+
+model Acao {
+  id            Int      @id @default(autoincrement())
+  nome_ativo    String   @unique // Ex: "Petrobras PN", "Tesouro Selic 2029"
+  codigo_ticker String   @unique // Ex: "PETR4", "LFT2029"
+  valor_atual   Decimal  @db.Decimal(10, 2) // Ex: 100.50 (10 dígitos no total, 2 após a vírgula)
+  tipo_ativo    String?  // Ex: "Ação Preferencial", "Tesouro Direto", "FII"
+  descricao     String?  // TEXT
+
+  // Relacionamento: Uma ação pode estar em várias alocações de clientes
+  alocacoes AlocacaoCliente[]
+
+  @@map("acoes") // Nome da tabela no banco de dados
+}
+
+model AlocacaoCliente {
+  id                    Int      @id @default(autoincrement())
+  clienteId             Int      @map("cliente_id") // <--- ADICIONADO MAPEAMENTO
+  acaoId                Int      @map("acao_id")    // <--- ADICIONADO MAPEAMENTO
+  quantidade            Decimal  @db.Decimal(18, 4)
+  valor_medio_aquisicao Decimal  @db.Decimal(12, 2)
+  data_ultima_compra    DateTime @db.Date
+
+  cliente Cliente @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+  acao    Acao    @relation(fields: [acaoId], references: [id], onDelete: Restrict)
+
+  @@unique([clienteId, acaoId])
+  @@map("alocacoes_cliente")
 }
